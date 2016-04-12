@@ -18,5 +18,4 @@ gunicorn
 mongoengine
 beautifulsoup4
 datetime
-re
 requests
