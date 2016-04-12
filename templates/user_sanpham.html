@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+        table { border-collapse: collapse; }
+        tr { display: block; float: left; }
+        th, td { display: block; border: 1px solid black; }
+    </style>
+
+</head>
+<body>
+
+    {% for sp in sanpham %}
+        <h2> {{ sp.ten_sanpham }}</h2>
+        {% for nhom in sp.nhom %}
+            <h3>{{ nhom.ten_nhom }}</h3>
+
+             <table style="width:100%">
+                <tr>
+                    <td>Rank</td>
+                    <td>Time</td>
+                </tr>
+                {% for rank in nhom.xephang %}
+
+                  <tr>
+                    <td>{{ rank.rank }}</td>
+                    <td>{{ rank.time }}</td>
+                  </tr>
+                {% endfor %}
+            </table>
+
+
+
+        {% endfor %}
+    {% endfor %}
+
+
+
+</body>
+</html>

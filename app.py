@@ -1,62 +1,67 @@
-"""
-Flask Documentation:     http://flask.pocoo.org/docs/
-Jinja2 Documentation:    http://jinja.pocoo.org/2/documentation/
-Werkzeug Documentation:  http://werkzeug.pocoo.org/documentation/
+from flask import Flask,render_template,redirect,url_for
+from flask import request
+import user_listsp
 
-This file creates your application.
-"""
-
-import os
-from flask import Flask, render_template, request, redirect, url_for
+from mongoengine import *
 
 app = Flask(__name__)
 
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'this_should_be_configured')
+connect('amazon_rank',host='mongodb://amazon:mlab1234@ds015740.mlab.com:15740/amazon_rank')
+
+class Xephang(EmbeddedDocument):
+    rank = StringField()
+    time = StringField()
+
+class Nhom(EmbeddedDocument):
+    ten_nhom = StringField()
+    xephang = ListField(EmbeddedDocumentField(Xephang))
+
+class Sanpham(Document):
+    ten_sanpham = StringField()
+    nhom = ListField(EmbeddedDocumentField(Nhom))
 
 
-###
-# Routing for your application.
-###
-
-@app.route('/')
-def home():
-    """Render website's home page."""
-    return render_template('home.html')
+class user(Document):
+    username = StringField()
+    password = StringField()
 
 
-@app.route('/about/')
-def about():
-    """Render the website's about page."""
-    return render_template('about.html')
 
 
-###
-# The functions below should be applicable to all Flask apps.
-###
 
-@app.route('/<file_name>.txt')
-def send_text_file(file_name):
-    """Send your static text file."""
-    file_dot_text = file_name + '.txt'
-    return app.send_static_file(file_dot_text)
-
-
-@app.after_request
-def add_header(response):
-    """
-    Add headers to both force latest IE rendering engine or Chrome Frame,
-    and also to cache the rendered page for 10 minutes.
-    """
-    response.headers['X-UA-Compatible'] = 'IE=Edge,chrome=1'
-    response.headers['Cache-Control'] = 'public, max-age=600'
-    return response
+@app.route('/', methods=['GET', 'POST'])
+def trangchu():
+    if request.method == 'POST':
+        x=request.form['username']
+        y=request.form['password']
+        for nguoi_dung in user.objects():
+            if x == nguoi_dung.username and y == nguoi_dung.password :
+                return redirect(url_for('profile', username=nguoi_dung.username))
+    return render_template("login.html")
 
 
-@app.errorhandler(404)
-def page_not_found(error):
-    """Custom 404 page."""
-    return render_template('404.html'), 404
+@app.route('/user/<username>', methods=['GET', 'POST'])
+def profile(username):
+    list_sanpham=user_listsp.list_sanpham(username)
+    listsp=[]
+    if list_sanpham=="khong":
+        kequa=[]
+    else:
+        for x in list_sanpham:
+            listsp.append(Sanpham.objects(ten_sanpham=x.ten_sanpham))
+            # listsp.append(x.ten_sanpham)
+
+    if request.method == 'POST':
+        id_sp=request.form['id_sp']
+        print(id_sp)
+        user_listsp.nhap_sanpham(username,id_sp)
+        return redirect(url_for('profile', username=username))
+    # return render_template("ketqua.html",username=username,sanpham=Sanpham.objects(ten_sanpham="B00IXC1ZMY"))
+    return render_template("ketqua.html",username=username,listsp=listsp)
+
+
+
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
