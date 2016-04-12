@@ -92,6 +92,7 @@
 
         {% for sp in sanpham %}
             <h2> {{ sp.ten_sanpham }}</h2>
+            <h2> {{ sp.id_sanpham }}</h2>
             {% for nhom in sp.nhom %}
                 <h3>{{ nhom.ten_nhom }}</h3>
 

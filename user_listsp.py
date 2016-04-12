@@ -5,7 +5,7 @@ import codecraper
 connect('amazon_rank',host='mongodb://amazon:mlab1234@ds015740.mlab.com:15740/amazon_rank')
 
 class Listsp(EmbeddedDocument):
-    ten_sanpham = StringField()
+    id_sanpham = StringField()
 
 class User_sanpham(Document):
     username = StringField()
@@ -17,17 +17,22 @@ class User_nhap_sp:
         self.sp_nhap= ten_sp
 
 def list_sanpham(nhap_user):
-    for user_data in User_sanpham.objects():
-        if user_data.username==nhap_user:
-            return user_data.sanpham
+    if len(User_sanpham.objects())==0:
         return "khong"
+    else:
+        for user_data in User_sanpham.objects():
+            if user_data.username==nhap_user:
+                return user_data.sanpham
+            return "khong"
+
+
 def nhap_sanpham(nhap_user,nhap_sp):
     user_nhap=User_nhap_sp(nhap_user,nhap_sp)
     print(user_nhap.name)
     #check rank sanpham luon khi nhap
     codecraper.check_rank(nhap_sp)
 
-    listsp=Listsp(ten_sanpham=user_nhap.sp_nhap)
+    listsp=Listsp(id_sanpham=user_nhap.sp_nhap)
 
     if len(User_sanpham.objects())==0:
         user_sp=User_sanpham(username=user_nhap.name,sanpham=[listsp])
@@ -37,10 +42,10 @@ def nhap_sanpham(nhap_user,nhap_sp):
         for user_data in User_sanpham.objects():
             if user_data.username==user_nhap.name:
                 w=1
-                # print(sp.ten_sanpham)
+                # print(sp.id_sanpham)
                 k=0
                 for sp in user_data.sanpham:
-                    if  user_nhap.sp_nhap== sp.ten_sanpham:
+                    if  user_nhap.sp_nhap== sp.id_sanpham:
                         k=1
                         break
                 if k==0:

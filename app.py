@@ -17,6 +17,7 @@ class Nhom(EmbeddedDocument):
     xephang = ListField(EmbeddedDocumentField(Xephang))
 
 class Sanpham(Document):
+    id_sanpham= StringField()
     ten_sanpham = StringField()
     nhom = ListField(EmbeddedDocumentField(Nhom))
 
@@ -48,7 +49,7 @@ def profile(username):
         kequa=[]
     else:
         for x in list_sanpham:
-            listsp.append(Sanpham.objects(ten_sanpham=x.ten_sanpham))
+            listsp.append(Sanpham.objects(id_sanpham=x.id_sanpham))
             # listsp.append(x.ten_sanpham)
 
     if request.method == 'POST':
@@ -56,7 +57,8 @@ def profile(username):
         print(id_sp)
         user_listsp.nhap_sanpham(username,id_sp)
         return redirect(url_for('profile', username=username))
-    # return render_template("ketqua.html",username=username,sanpham=Sanpham.objects(ten_sanpham="B00IXC1ZMY"))
+
+    # return render_template("ketqua.html",username=username)
     return render_template("ketqua.html",username=username,listsp=listsp)
 
 
