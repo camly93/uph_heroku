@@ -31,7 +31,7 @@ def check_rank(sanpham):
     if link_amazon_id == None:
         if link_amazon_id1 != None:
             h=link_amazon_id1.text.strip()
-            c=re.findall("#[0-9]* in .*",h)
+            c=re.findall("#[0-9]*.[0-9]* in .*",h)
             b='\n'.join(c)
         else:
             b=""

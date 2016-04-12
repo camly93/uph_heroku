@@ -16,7 +16,7 @@ mock
 gevent
 gunicorn
 mongoengine
-BeautifulSoup
+beautifulsoup4
 datetime
 re
 requests
