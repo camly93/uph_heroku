@@ -39,19 +39,21 @@ def nhap_sanpham(nhap_user,nhap_sp):
         user_sp.save()
     else:
         w=0
-        for user_data in User_sanpham.objects():
-            if user_data.username==user_nhap.name:
-                w=1
-                # print(sp.id_sanpham)
-                k=0
-                for sp in user_data.sanpham:
-                    if  user_nhap.sp_nhap== sp.id_sanpham:
-                        k=1
-                        break
-                if k==0:
-                    user_data.sanpham.append(listsp)
-                    user_data.save()
-                break
-        if w==0:
-            user_sp=User_sanpham(username=user_nhap.name,sanpham=[listsp])
-            user_sp.save()
+        ## chi cho phep nhap toi da 20 san pham
+        if len(User_sanpham.objects())<=20:
+            for user_data in User_sanpham.objects():
+                if user_data.username==user_nhap.name:
+                    w=1
+                    # print(sp.id_sanpham)
+                    k=0
+                    for sp in user_data.sanpham:
+                        if  user_nhap.sp_nhap== sp.id_sanpham:
+                            k=1
+                            break
+                    if k==0:
+                        user_data.sanpham.append(listsp)
+                        user_data.save()
+                    break
+            if w==0:
+                user_sp=User_sanpham(username=user_nhap.name,sanpham=[listsp])
+                user_sp.save()

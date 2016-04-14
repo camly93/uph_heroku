@@ -46,6 +46,23 @@ def trangchu():
             return render_template("login.html",saidangnhap="Sai user hoặc mật khẩu.")
     return render_template("login.html")
 
+@app.route('/dangky/', methods=['GET', 'POST'])
+def dangky():
+    if request.method == 'POST':
+        x=request.form['username']
+        y=request.form['password']
+        codangnhap = True
+        for nguoi_dung in user.objects():
+            if x == nguoi_dung.username:
+                codangnhap = False
+                return render_template("dangky.html", saidangky="Tên đăng nhập bị trùng")
+        if codangnhap==True:
+            user_moi = user(username=x, password=y)
+            user_moi.save()
+            redirect(url_for('trangchu'))
+    return render_template("dangky.html")
+
+
 
 @app.route('/user/<username>', methods=['GET', 'POST'])
 def profile(username):
@@ -58,6 +75,7 @@ def profile(username):
     else:
         password = x
     codangnhap = False
+
     for nguoi_dung in user.objects():
         if username == nguoi_dung.username and password == nguoi_dung.password:
             codangnhap=True
