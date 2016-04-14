@@ -82,39 +82,64 @@
             <input type="submit" value="Nhap" />
         </form>
 
-    <style>
-        table { border-collapse: collapse; }
-        tr { display: block; float: left; }
-        th, td { display: block; border: 1px solid black; }
-    </style>
+
     {% for sanpham in listsp %}
-
-
         {% for sp in sanpham %}
-            <h2> {{ sp.ten_sanpham }}</h2>
-            <h2> {{ sp.id_sanpham }}</h2>
-            {% for nhom in sp.nhom %}
-                <h3>{{ nhom.ten_nhom }}</h3>
-
-                 <table style="width:100%">
+             <table style="border: 1px solid black;" >
+                <thead>
                     <tr>
-                        <td>Rank</td>
-                        <td>Time</td>
+                        <th class="check" ><a href="http://www.amazon.com/dp/{{ sp.id_sanpham }}">{{ sp.ten_sanpham }}</a></th>
+                        <th >Rank</th>
+                        <th> Update</th>
+                        <th>Actions</th>
                     </tr>
-                    {% for rank in nhom.xephang %}
+                </thead>
+                <tbody>
+                {% for nhom in sp.nhom %}
+                    <tr>
+                        <td>{{ nhom.ten_nhom }}</td>
 
-                      <tr>
-                        <td>{{ rank.rank }}</td>
-                        <td>{{ rank.time }}</td>
-                      </tr>
-                    {% endfor %}
-                </table>
+						<td>34</td>
+						<td>10/04 01:54</td>
+                        <td class="actions">	<a name="" class="expandable"><img src="https://serpfox.com/assets/images/icons/chart.png" alt="Graph" title="Graph"></a></td>
+                    </tr>
+                    <tr>
+                        <td colspan="7" id="chart_hide" style="display:none" >
+
+                            <table  style="display:none" class="highchart" data-graph-container-before="1" data-graph-type="line" data-graph-xaxis-labels-enabled="0">
+
+                                <thead>
+                                  <tr>
+                                      <th>Time</th>
+                                      <th  data-graph-dash-style="dot">Rank</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                    {% for rank in nhom.xephang %}
+                                      <tr>
+                                        <td>{{ rank.time }}</td>
+                                        <td>{{ rank.rank }}</td>
+                                      </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
 
 
 
-            {% endfor %}
+
+
+
+
         {% endfor %}
     {% endfor %}
+
+
 </div>
 
 <!-- Footer -->
@@ -153,5 +178,26 @@ function openNav() {
 </script>
 
 </body>
+
+    <script src="http://highcharttable.org/js/jquery.min.js"></script>
+    <script src="http://highcharttable.org/js/highcharts.js"></script>
+    <script src="http://code.highcharttable.org/master/jquery.highchartTable-min.js"></script>
+
+   <script>
+       $(document).ready(function() {
+           $(".expandable").click(function(){
+
+
+                 $(this).closest('tr').next().children("td#chart_hide").toggle( );
+
+           });
+
+
+
+            $('table.highchart').highchartTable();
+
+       });
+    </script>
+
 </html>
 

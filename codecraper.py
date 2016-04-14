@@ -87,10 +87,10 @@ def check_rank(sanpham):
                         if sanpham_new.group[i] == nh.ten_nhom:
                             k = 1
                             m = 0
-                            for xh in nh.xephang:
-                                if time == xh.time:
-                                    m = 1
-                                    break
+                            # for xh in nh.xephang:
+                            #     if time == xh.time:
+                            #         m = 1
+                            #         break
                             if m == 0:
                                 nh.xephang.append(xephang)
                                 nh.save()

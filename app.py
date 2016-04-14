@@ -1,4 +1,4 @@
-from flask import Flask,render_template,redirect,url_for
+from flask import Flask,render_template,redirect,url_for,make_response
 from flask import request
 import user_listsp
 
@@ -35,32 +35,51 @@ def trangchu():
     if request.method == 'POST':
         x=request.form['username']
         y=request.form['password']
+        codangnhap = False
         for nguoi_dung in user.objects():
             if x == nguoi_dung.username and y == nguoi_dung.password :
-                return redirect(url_for('profile', username=nguoi_dung.username))
+                codangnhap = False
+                resp = make_response(redirect(url_for('profile', username=nguoi_dung.username)))
+                resp.set_cookie('username', y)
+                return resp
+        if codangnhap==False:
+            return render_template("login.html",saidangnhap="Sai user hoặc mật khẩu.")
     return render_template("login.html")
 
 
 @app.route('/user/<username>', methods=['GET', 'POST'])
 def profile(username):
-    list_sanpham=user_listsp.list_sanpham(username)
-    listsp=[]
-    if list_sanpham=="khong":
-        kequa=[]
+    try:
+        x= request.cookies.get('username')
+    except NameError:
+        x = None
+    if x is None:
+        return redirect(url_for('trangchu'))
     else:
-        for x in list_sanpham:
-            listsp.append(Sanpham.objects(id_sanpham=x.id_sanpham))
-            # listsp.append(x.ten_sanpham)
+        password = x
+    codangnhap = False
+    for nguoi_dung in user.objects():
+        if username == nguoi_dung.username and password == nguoi_dung.password:
+            codangnhap=True
+            list_sanpham=user_listsp.list_sanpham(username)
+            listsp=[]
+            if list_sanpham=="khong":
+                kequa=[]
+            else:
+                for x in list_sanpham:
+                    listsp.append(Sanpham.objects(id_sanpham=x.id_sanpham))
+                    # listsp.append(x.ten_sanpham)
 
-    if request.method == 'POST':
-        id_sp=request.form['id_sp']
-        print(id_sp)
-        user_listsp.nhap_sanpham(username,id_sp)
-        return redirect(url_for('profile', username=username))
+            if request.method == 'POST':
+                id_sp=request.form['id_sp']
+                print(id_sp)
+                user_listsp.nhap_sanpham(username,id_sp)
+                return redirect(url_for('profile', username=username))
 
-    # return render_template("ketqua.html",username=username)
-    return render_template("ketqua.html",username=username,listsp=listsp)
-
+            # return render_template("ketqua.html",username=username)
+            return render_template("ketqua.html",username=username,listsp=listsp)
+    if codangnhap==False:
+        redirect(url_for('trangchu'))
 
 
 
