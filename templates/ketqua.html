@@ -50,7 +50,8 @@
 </div>
 
 <div class="w3-display-container w3-animate-opacity">
-  <img class="testimg" src="http://techkids.edu.vn/wp-content/uploads/2016/02/C4e-cover-1.png" alt="boat" style="width:100%;min-height:350px;max-height:600px;">
+  <img class="testimg" src="http://techkids.edu.vn/wp-content/uploads/2016/02/C4e-cover-1.png" alt="boat"
+       style="margin-top: 30px;width:100%;min-height:350px;max-height:600px;">
   <div class="w3-container w3-display-bottomleft w3-margin-bottom">
     <button onclick="document.getElementById('id01').style.display='block'" class="w3-btn w3-xlarge w3-theme w3-hover-teal" title="Go To W3.CSS">C4E3 NHÓM 1: Heroes & Zeroes</button>
   </div>
@@ -76,13 +77,16 @@
 
 <div id="nhapsp" class="w3-container w3-padding-64 w3-center">
 
-        <h1>Nhập sản phẩm</h1>
+        <h1 style="border: #d5fff3 ":> Nhập sản phẩm</h1>
         <form method="post">
-            <input name="id_sp"  placeholder="ID sản phẩm">
-            <input type="submit" value="Nhap" />
+            <input name="link_id"  placeholder="Link sản phẩm" style="border-color: #2aabd2">
+            <input name="id_del"  value="xxx" style=" display: none; ">
+            <input type="submit" value="Nhap"  style="border-color: cyan" />
         </form>
+</div>
 
 
+<div id="listsp" class="w3-container w3-padding-64 w3-center">
     {% for sanpham in listsp %}
         {% for sp in sanpham %}
              <table style="border: 1px solid black;" >
@@ -91,7 +95,8 @@
                         <th class="check" ><a href="http://www.amazon.com/dp/{{ sp.id_sanpham }}">{{ sp.ten_sanpham }}</a></th>
                         <th >Rank</th>
                         <th> Update</th>
-                        <th>Actions</th>
+                        <th> Actions</th>
+                        <th> Delete</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -101,7 +106,18 @@
 
 						<td>34</td>
 						<td>10/04 01:54</td>
-                        <td class="actions">	<a name="" class="expandable"><img src="https://serpfox.com/assets/images/icons/chart.png" alt="Graph" title="Graph"></a></td>
+                        <td class="actions">
+                            <a name="" class="expandable"><img src="https://serpfox.com/assets/images/icons/chart.png" alt="Graph" title="Graph"></a>
+
+                        </td>
+                        <td>
+                            <form method="post">
+                                <input name="link_id"  value="" style=" display: none; ">
+                                <input name="id_del"  value="{{ sp.id_sanpham }}" style=" display: none;">
+                                 <input type="submit" value="X"  onclick="return confirm('Bạn có chắc muốn xóa sản phẩm: {{ sp.ten_sanpham }}')">
+{#                                <a name="{{ sp.id_sanpham }}" class="delete"><img src="http://serpfox.com/assets/images/icons/delete.png" ></a>#}
+                            </form>
+                        </td>
                     </tr>
                     <tr>
                         <td colspan="7" id="chart_hide" style="display:none" >

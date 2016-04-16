@@ -1,6 +1,7 @@
 from flask import Flask,render_template,redirect,url_for,make_response
 from flask import request
 import user_listsp
+import Lay_id
 
 from mongoengine import *
 
@@ -89,10 +90,26 @@ def profile(username):
                     # listsp.append(x.ten_sanpham)
 
             if request.method == 'POST':
-                id_sp=request.form['id_sp']
-                print(id_sp)
-                user_listsp.nhap_sanpham(username,id_sp)
-                return redirect(url_for('profile', username=username))
+                link_id=request.form['link_id']
+                print(link_id)
+                id_del = request.form['id_del']
+
+                if link_id != "":
+                    id_sp=Lay_id.layid(link_id)
+
+                # id_sp=request.form['id_sp']
+
+                if id_del == 'xxx':
+                    print(id_sp)
+                    user_listsp.nhap_sanpham(username,id_sp)
+                    return redirect(url_for('profile', username=username))
+                if id_del != 'xxx':
+                    user_listsp.xoa_sanpham(username,id_del)
+                    list_sanpham = user_listsp.list_sanpham(username)
+                    listsp = []
+                    for x in list_sanpham:
+                        listsp.append(Sanpham.objects(id_sanpham=x.id_sanpham))
+                    return render_template("ketqua.html", username=username, listsp=listsp)
 
             # return render_template("ketqua.html",username=username)
             return render_template("ketqua.html",username=username,listsp=listsp)

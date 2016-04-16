@@ -26,6 +26,16 @@ def list_sanpham(nhap_user):
                 return user_data.sanpham
         return "khong2"
 
+def xoa_sanpham(nhap_user,xoa_sp):
+
+    for user_data in User_sanpham.objects():
+        if user_data.username == nhap_user:
+            listsp = Listsp(id_sanpham=xoa_sp)
+            user_data.sanpham.remove(listsp)
+            user_data.save()
+            break
+
+
 
 
 def nhap_sanpham(nhap_user,nhap_sp):
@@ -59,3 +69,5 @@ def nhap_sanpham(nhap_user,nhap_sp):
             if w==0:
                 user_sp=User_sanpham(username=user_nhap.name,sanpham=[listsp])
                 user_sp.save()
+
+
