@@ -60,7 +60,7 @@ def dangky():
         if codangnhap==True:
             user_moi = user(username=x, password=y)
             user_moi.save()
-            redirect(url_for('trangchu'))
+            return redirect(url_for('trangchu'))
     return render_template("dangky.html")
 
 
@@ -114,7 +114,7 @@ def profile(username):
             # return render_template("ketqua.html",username=username)
             return render_template("ketqua.html",username=username,listsp=listsp)
     if codangnhap==False:
-        redirect(url_for('trangchu'))
+        return redirect(url_for('trangchu'))
 
 
 
