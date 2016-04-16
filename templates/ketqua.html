@@ -29,7 +29,7 @@
   <li class="w3-hide-small"><a href="/" class="w3-hover-white">Đăng nhập</a></li>
   <li class="w3-hide-small"><a href="/dangky" class="w3-hover-white">Đăng ký</a></li>
 
-  <li class="w3-hide-small w3-right"><a href="http://www.amazon.com/ref=nav_logo" class="w3-hover-teal" title="Search" target="_blank"></li>
+  <li class="w3-hide-small w3-right"><a href="http://www.amazon.com/ref=nav_logo" class="w3-hover-teal" title="Search" target="_blank"><i class="fa fa-search"></i></a></li>
  </ul>
 </div>
 
@@ -74,6 +74,7 @@
             <input name="id_del"  value="xxx" style=" display: none; ">
             <input type="submit" value="Nhap"  style="border-color: cyan" />
         </form>
+        <p>Ví dụ link đúng: http://www.amazon.com/dp/B00BGU9OT6</p>
 </div>
 
 
@@ -83,7 +84,11 @@
              <table style="border: 1px solid black;" >
                 <thead>
                     <tr>
-                        <th class="check" ><a href="http://www.amazon.com/dp/{{ sp.id_sanpham }}">{{ sp.ten_sanpham }}</a></th>
+                        <th class="check" >
+                            <div style=" width: 800px; overflow: hidden; overflow: hidden; height: 50px; line-height:50px; ">
+                            <a href="http://www.amazon.com/dp/{{ sp.id_sanpham }}" class="w3-hover-teal" title="{{ sp.ten_sanpham }}">{{ sp.ten_sanpham }}</a>
+                            </div>
+                        </th>
                         <th >Rank</th>
                         <th> Update</th>
                         <th> Actions</th>

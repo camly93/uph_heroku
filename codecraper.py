@@ -31,6 +31,8 @@ def check_rank(sanpham):
     # print(link_ten_sp)
     link_amazon_id = link_amazon_html.find("li", id="SalesRank")
     link_amazon_id1 = link_amazon_html.find("table", id="productDetails_detailBullets_sections1")
+    # print(link_amazon_id)
+    # print(link_amazon_id1)
     if link_amazon_id == None:
         if link_amazon_id1 != None:
             h = link_amazon_id1.text.strip()
@@ -44,8 +46,13 @@ def check_rank(sanpham):
     res = re.findall(r"#([0-9]*.[0-9]*)", trim_link_amazon)
     name_group = []
     for element in re.findall(".*in (.*)", trim_link_amazon):
-        if re.match('.*>.*', element) == None:
-            name_group.append(element)
+        if re.match('.*> .*', element) == None:
+            if re.match('.*[(].*', element) == None:
+                name_group.append(element)
+            # print(re.match('.*[(].*', element))== None
+            else:
+                c=re.findall('(.*)[(].*', element)[0]
+                name_group.append(c)
         else:
             c = re.findall('.*> (.*)', element)[0]
             name_group.append(c)
