@@ -18,12 +18,14 @@ class User_nhap_sp:
 
 def list_sanpham(nhap_user):
     if len(User_sanpham.objects())==0:
-        return "khong"
+        return "khong1"
     else:
         for user_data in User_sanpham.objects():
+            print(user_data.username)
             if user_data.username==nhap_user:
                 return user_data.sanpham
-            return "khong"
+        return "khong2"
+
 
 
 def nhap_sanpham(nhap_user,nhap_sp):
